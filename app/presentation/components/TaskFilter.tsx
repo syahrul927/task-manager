@@ -19,7 +19,7 @@ export function TaskFilter({ filter, onFilterChange }: TaskFilterProps) {
         <button
           key={f.value}
           onClick={() => onFilterChange(f.value)}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-4 py-2 rounded-lg font-medium ${
             filter === f.value
               ? 'bg-blue-600 text-white'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'

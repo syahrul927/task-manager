@@ -58,7 +58,7 @@ export function TaskList({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
                   onChange={(e) =>
                     onUpdateTask(task.id, { status: e.target.value as any })
                   }
-                  className="text-sm px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="text-sm px-3 py-1 border border-gray-300 rounded-lg"
                 >
                   <option value="to do">To Do</option>
                   <option value="in progress">In Progress</option>
@@ -69,7 +69,7 @@ export function TaskList({ tasks, onUpdateTask, onDeleteTask }: TaskListProps) {
 
             <button
               onClick={() => onDeleteTask(task.id)}
-              className="ml-4 px-3 py-1 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+              className="ml-4 px-3 py-1 text-red-600 hover:bg-red-50 rounded-lg"
             >
               Delete
             </button>

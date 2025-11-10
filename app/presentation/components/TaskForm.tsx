@@ -25,7 +25,7 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        className="w-full py-3 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
       >
         + Add Task
       </button>
@@ -45,7 +45,7 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg "
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg"
           placeholder="Enter task title"
           autoFocus
         />
@@ -66,7 +66,7 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
         <button
           type="submit"
           disabled={!title.trim()}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           Create Task
         </button>
@@ -77,7 +77,7 @@ export function TaskForm({ onSubmit }: TaskFormProps) {
             setTitle("");
             setDescription("");
           }}
-          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors"
+          className="px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300"
         >
           Cancel
         </button>
