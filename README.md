@@ -36,3 +36,12 @@
 - Auth: NextAuth (with JWT)
 - State Management: React Hooks
 - Other tools: Prisma, tRPC, Zod, etc.
+
+### Instruction to start
+
+Make sure you already have pnpm installed in your machine and docker already running, then you can start by running this command.
+
+```bash
+docker-compose up -d
+
+```

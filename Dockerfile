@@ -1,37 +1,62 @@
-FROM node:22
+FROM node:22-alpine AS base
+RUN apk add --no-cache libc6-compat
 
+# Install dependencies only when needed
+FROM base AS deps
 RUN npm install -g pnpm
-
-# Set working directory
 WORKDIR /app
 
-# Copy package files
 COPY package.json pnpm-lock.yaml* ./
-
-# Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
+# Rebuild the source code only when needed
+FROM base AS builder
+RUN npm install -g pnpm
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Generate Prisma client and build
+# Generate Prisma client
 RUN pnpm run db:generate
+
+# Build the application
 RUN pnpm run build
 
-# Create non-root user
+# Production image, copy all the files and run next
+FROM base AS runner
+RUN npm install -g pnpm
+WORKDIR /app
+
+ENV NODE_ENV production
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Change ownership of app directory
-RUN chown -R nextjs:nodejs /app
+COPY --from=builder /app/public ./public
 
-# Switch to non-root user
+# Set the correct permission for prerender cache
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+# Automatically leverage output traces to reduce image size
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+# Copy Prisma files and environment
+COPY --from=builder --chown=nextjs:nodejs /app/prisma ./prisma
+COPY --from=builder --chown=nextjs:nodejs /app/.env ./.env
+
+# Create database and set permissions as root before switching user
+RUN mkdir -p ./prisma && \
+    touch ./prisma/dev.db && \
+    chown -R nextjs:nodejs ./prisma && \
+    chmod 664 ./prisma/dev.db
+
 USER nextjs
 
 EXPOSE 3000
 
 ENV PORT 3000
-ENV NODE_ENV production
 ENV HOSTNAME "0.0.0.0"
 
 CMD ["node", "server.js"]
